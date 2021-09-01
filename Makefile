@@ -1,7 +1,9 @@
 
 SOURCES := $(shell find . -name '*.c')
 OPENSSLDIR := ../openssl
+OPENSSLFILES := $(shell find ${OPENSSLDIR}/ssl -name '*.o') $(shell find ${OPENSSLDIR}/crypto -name '*.o')
 CC := clang${LLVM_SUFFIX} -flto -O1 -mprefer-vector-width=1 $(CFLAGS)
+PICOLIBC_HOME := ../picolibc/build/image/picolibc/x86_64-unknown-fromager
 
 # Instructions:
 # clang-9 -flto -O1 -mprefer-vector-width=1  -I../openssl/include -c src/server.c -o server.o
@@ -22,3 +24,10 @@ compile: $(SOURCES)
 
 llvm: $(SOURCES)
 	$(CC) -I$(OPENSSLDIR)/include $< -S -emit-llvm -o server.c.ll
+
+picolib: $(SOURCES)
+	cc_objects="${OPENSSLFILES} server.o" \
+	  $(PICOLIBC_HOME)/lib/fromager-link.sh
+#         --override=libavcodec/libavcodec.a
+#	cc_secret_objects=build/fromager/driver_secret.bc \
+

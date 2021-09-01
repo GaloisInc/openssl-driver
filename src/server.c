@@ -536,6 +536,37 @@ void configure_context(SSL_CTX *ctx)
     }
 }
 
+void handle_connection(int sock, SSL_CTX *ctx) {
+    struct sockaddr_in addr;
+    uint len = sizeof(addr);
+    SSL *ssl;
+    const char reply[] = "Logged in\n";
+    char password[128] = {0};
+
+    int client = accept(sock, (struct sockaddr*)&addr, &len);
+    if (client < 0) {
+        perror("Unable to accept");
+        exit(EXIT_FAILURE);
+    }
+
+    ssl = SSL_new(ctx);
+    SSL_set_fd(ssl, client);
+
+    if (SSL_accept(ssl) <= 0) {
+        ERR_print_errors_fp(stderr);
+    }
+    else {
+        size_t length;
+        SSL_read(ssl, password, 127);
+        printf("%s\n", password);
+        SSL_write(ssl, reply, strlen(reply));
+    }
+
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
+    close(client);
+}
+
 int main(int argc, char **argv)
 {
     int sock;
@@ -549,32 +580,8 @@ int main(int argc, char **argv)
     sock = create_socket(4433);
 
     /* Handle connections */
-    while(1) {
-        struct sockaddr_in addr;
-        uint len = sizeof(addr);
-        SSL *ssl;
-        const char reply[] = "test\n";
-
-        int client = accept(sock, (struct sockaddr*)&addr, &len);
-        if (client < 0) {
-            perror("Unable to accept");
-            exit(EXIT_FAILURE);
-        }
-
-        ssl = SSL_new(ctx);
-        SSL_set_fd(ssl, client);
-
-        if (SSL_accept(ssl) <= 0) {
-            ERR_print_errors_fp(stderr);
-        }
-        else {
-            SSL_write(ssl, reply, strlen(reply));
-        }
-
-        SSL_shutdown(ssl);
-        SSL_free(ssl);
-        close(client);
-    }
+    handle_connection(sock, ctx);
+    handle_connection(sock, ctx);
 
     close(sock);
     SSL_CTX_free(ctx);
