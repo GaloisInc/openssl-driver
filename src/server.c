@@ -538,7 +538,7 @@ void configure_context(SSL_CTX *ctx)
 
 void handle_connection(int sock, SSL_CTX *ctx) {
     struct sockaddr_in addr;
-    uint len = sizeof(addr);
+    socklen_t len = sizeof(addr);
     SSL *ssl;
     const char reply[] = "Logged in\n";
     char password[128] = {0};
