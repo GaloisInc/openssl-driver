@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include "noni.h"
 
 int create_socket(int port)
 {
@@ -556,8 +557,11 @@ void handle_connection(int sock, SSL_CTX *ctx) {
         ERR_print_errors_fp(stderr);
     }
     else {
-        size_t length;
+        // size_t length;
+	cc_ssl_should_taint_incoming = 1;
         SSL_read(ssl, password, 127);
+	cc_ssl_should_taint_incoming = 0;
+
         printf("%s\n", password);
         SSL_write(ssl, reply, strlen(reply));
     }
@@ -580,7 +584,9 @@ int main(int argc, char **argv)
     sock = create_socket(4433);
 
     /* Handle connections */
+    cc_current_label = label0;
     handle_connection(sock, ctx);
+    cc_current_label = label1;
     handle_connection(sock, ctx);
 
     close(sock);
