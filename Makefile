@@ -9,7 +9,7 @@ CFLAGS=-flto -mprefer-vector-width=1 \
     -isystem $(CLANG_DIR)/include     \
     -isystem $(PICOLIBC_HOME)/include \
     -ggdb                             \
-    -O1
+    -Os
 CC := clang${LLVM_SUFFIX} ${CFLAGS}
 
 all: server server-secret picolib
@@ -23,6 +23,7 @@ server-secret:
 picolib: $(SOURCES)
 	cc_secret_objects=server-secret.o \
 	cc_objects="${OPENSSLFILES} server.o" \
+	COMPILER_RT_HOME=/home/james/sieve/cheesecloth/llvm-project/compiler-rt/build \
 	  $(PICOLIBC_HOME)/lib/fromager-link.sh
 #         --override=libavcodec/libavcodec.a
 
