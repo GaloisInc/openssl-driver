@@ -425,7 +425,7 @@ HOST, PORT = '', 4433
 def victim_request():
     # SET VARIABLES
     # packet = "super_secret_password"
-    packet = "super_secret_password...............................................................................................................................................................................................endofpassword"
+    packet = ''.join('password%02d' % i for i in range(100))[:127]
     
     # CREATE SOCKET
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
