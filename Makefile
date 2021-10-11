@@ -23,7 +23,7 @@ server-secret:
 picolib: $(SOURCES)
 	cc_secret_objects=server-secret.o \
 	cc_objects="${OPENSSLFILES} server.o" \
-	COMPILER_RT_HOME=/home/james/sieve/cheesecloth/llvm-project/compiler-rt/build \
+	COMPILER_RT_HOME=${PWD}/../llvm-project/compiler-rt/build \
 	  $(PICOLIBC_HOME)/lib/fromager-link.sh
 #         --override=libavcodec/libavcodec.a
 
