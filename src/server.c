@@ -25,6 +25,9 @@ int create_socket(int port)
 	exit(EXIT_FAILURE);
     }
 
+    int option = 1;
+    setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
+
     if (bind(s, (struct sockaddr*)&addr, sizeof(addr)) < 0) {
 	perror("Unable to bind");
 	exit(EXIT_FAILURE);
@@ -568,6 +571,7 @@ void handle_connection(int sock, SSL_CTX *ctx) {
 
     SSL_shutdown(ssl);
     SSL_free(ssl);
+    shutdown(client, SHUT_WR);
     close(client);
 }
 
