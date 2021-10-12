@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/python
 
 # https://gist.github.com/eelsivart/10174134
 
@@ -391,7 +391,7 @@ HOST, PORT = '', 4433
 def victim_request():
     # SET VARIABLES
     # packet = "super_secret_password"
-    packet = ''.join('password%02d' % i for i in range(100))[:127]
+    packet = ''.join('password%02d' % i for i in range(7))[:127]
     
     # CREATE SOCKET
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
