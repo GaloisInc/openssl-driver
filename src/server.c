@@ -57,7 +57,7 @@ SSL_CTX *create_context()
     const SSL_METHOD *method;
     SSL_CTX *ctx;
 
-    method = SSLv23_server_method();
+    method = TLSv1_server_method();
 
     ctx = SSL_CTX_new(method);
     if (!ctx) {
@@ -65,6 +65,9 @@ SSL_CTX *create_context()
 	ERR_print_errors_fp(stderr);
 	exit(EXIT_FAILURE);
     }
+
+    //SSL_CTX_set_cipher_list(ctx, "AES128-GCM-SHA256");
+    SSL_CTX_set_cipher_list(ctx, "AES128-SHA");
 
     return ctx;
 }
