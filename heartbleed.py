@@ -173,7 +173,7 @@ def conn(targ, port):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sys.stdout.flush()
-        s.settimeout(10)
+        s.settimeout(60)
         #time.sleep(0.2)
         s.connect((targ, port))
         return s
@@ -395,7 +395,7 @@ def victim_request():
     
     # CREATE SOCKET
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(10)
+    sock.settimeout(60)
     
     # WRAP SOCKET
     wrappedSocket = ssl.wrap_socket(sock, ciphers="AES128-SHA",
