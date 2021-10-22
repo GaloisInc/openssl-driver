@@ -308,7 +308,7 @@ void handle_connection(int sock, SSL_CTX *ctx) {
         SSL_read(ssl, password, 127);
 	cc_ssl_should_taint_incoming = 0;
 
-        printf("%s\n", password);
+        //printf("%s\n", password);
         SSL_write(ssl, reply, strlen(reply));
     }
 
