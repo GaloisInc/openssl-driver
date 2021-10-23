@@ -318,7 +318,7 @@ void handle_connection(int sock, SSL_CTX *ctx) {
     close(client);
 }
 
-int main(int argc, char **argv)
+int main()
 {
     int sock;
     SSL_CTX *ctx;
