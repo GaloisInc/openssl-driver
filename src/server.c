@@ -8,8 +8,9 @@
 #include <arpa/inet.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
+#include "fromager.h"
 #include "noni.h"
-
+#include "server.h"
 
 // Public socket data from the victim request.
 // ** BEGIN RECORDINGS public read_buf_0-12
@@ -75,6 +76,10 @@ unsigned char read_buf_13[5] = {
   0x16, 0x03, 0x01, 0x00, 0x3D
 };
 // ** END RECORDINGS
+
+const size_t READ_COUNTS = 17;
+const unsigned char** read_bufs = (const unsigned char*[READ_COUNTS]) {read_buf_0,read_buf_1,read_buf_2,read_buf_3,read_buf_4,read_buf_5,read_buf_6,read_buf_7,read_buf_8,read_buf_9,read_buf_10,read_buf_11,read_buf_12,read_buf_13,read_buf_14,read_buf_15,read_buf_16};
+const unsigned int* read_lens = (const unsigned int[READ_COUNTS]) {32, 5, 61, 5, 70, 5, 1, 5, 48, 5, 32, 5, 96, 5, 61, 5, 3};
 
 // // Public gettimeofday responses.
 // const size_t TIMEOFDAY_COUNTS = 7;
